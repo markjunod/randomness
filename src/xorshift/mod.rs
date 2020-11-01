@@ -1,2 +1,2 @@
 pub mod xorshift_plus;
-pub mod xoshiro;
+pub mod xoshiro_256ss;

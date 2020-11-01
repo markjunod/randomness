@@ -13,11 +13,19 @@ criterion = "0.3.3"
 rand = "0.7.3"
 
 [[bench]]
+name = "external_rand_crate_benchmarks"
+harness = false
+
+[[bench]]
 name = "random_number_benchmarks"
 harness = false
 
 [[bench]]
 name = "mersenne_twister_benchmarks"
+harness = false
+
+[[bench]]
+name = "middle_square_weyl_sequence_benchmarks"
 harness = false
 
 [[bench]]

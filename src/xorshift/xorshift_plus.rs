@@ -53,10 +53,22 @@ mod tests {
 
     #[test]
     fn from_seed_test() {
-        let mut xorshift = XorshiftPlus::from_seed(0);
+        let xorshift = XorshiftPlus::from_seed(0);
 
         assert_eq!(xorshift.a_state, 0);
         assert_eq!(xorshift.b_state, 16294208416658607535);
+    }
+
+    #[test]
+    fn next_u32_test() {
+        let mut xorshift = XorshiftPlus::from_seed(0);
+
+        assert_eq!(xorshift.next_u32(), 3292614715);
+    }
+
+    #[test]
+    fn next_u64_test() {
+        let mut xorshift = XorshiftPlus::from_seed(0);
 
         assert_eq!(xorshift.next_u64(), 14141672521104462240);
     }
