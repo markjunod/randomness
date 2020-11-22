@@ -61,7 +61,7 @@ impl RandomNumber for MiddleSquaresWeylSequence {
 
         extract_middle(self);
 
-        (((xx ^ self.x) >> 11) as f64) / crate::TWO_53
+        (((xx ^ self.x) >> 11) as f64) * crate::TWO_53_INVERSE
     }
 }
 

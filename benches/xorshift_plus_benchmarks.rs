@@ -1,6 +1,6 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
-use random_numbers;
-use random_numbers::RandomNumberAlgorithm;
+
+use random_numbers::prelude::*;
 
 fn bench_xorshift_plus_init_with_no_seed(c: &mut Criterion) {
     c.bench_function("xorshift_plus_init_with_no_seed", |b| b.iter(|| random_numbers::new(RandomNumberAlgorithm::XorshiftPlus)));

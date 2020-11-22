@@ -1,3 +1,17 @@
+// Copyright (c) 2020 Mark Junod. Subject to the MIT License
+
+//! Traits defining pseudo-random number generation algorithms, and utility methods for getting specific
+//! implementations of those traits.
+//! 
+//! # Using the Library
+//! 
+//! 
+
+pub mod prelude {
+    pub use crate::*;
+    pub use crate::RandomNumber;
+}
+
 mod mersenne_twister;
 mod msws;
 mod seeds;
@@ -9,12 +23,19 @@ use msws::MiddleSquaresWeylSequence;
 use xorshift::xorshift_plus::XorshiftPlus;
 use xorshift::xoshiro_256ss::Xoshiro256SS;
 
-pub const TWO_31: u32 = 2147483648;
-pub const TWO_63: u64 = 9223372036854775808;
+/// 2^31. Primarily used to convert a random u32 into a bool. We compare the random u32 to 2^31 instead
+/// of comparing it to 1 mod 2 because the highest bit is usually of better quality than the lowest bit.
+pub const TWO_31: u32 = 0b10000000_00000000_00000000_00000000;
 
+/// 2^63. Primarily used to convert a random u64 into a bool.  We compare the random u64 to 2^63 instead
+/// of comparing it to 1 mod 2 because the highest bit is usually of better quality than the lowest bit.
+pub const TWO_63: u64 = 0b10000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000;
+
+/// 2^32. Used to convert random 32-bit unsigned integers into f32s between 0 and 1.
 pub const TWO_32: f32 = 4294967296.0;
 pub const TWO_32_INVERSE: f32 = 1.0 / TWO_32;
 
+/// 2^53. Used to convert random 64-bit unsigned integers into f64s between 0 and 1.
 pub const TWO_53: f64 = 9007199254740992.0;
 pub const TWO_53_INVERSE: f64 = 1.0 / TWO_53;
 
@@ -68,11 +89,11 @@ pub trait RandomNumber {
     }
 
     fn next_f32(&mut self) -> f32 {
-        (self.next_u32() as f32) / TWO_32
+        (self.next_u32() as f32) * TWO_32_INVERSE
     }
 
     fn next_f64(&mut self) -> f64 {
-        ((self.next_u64() >> 11) as f64) / TWO_53
+        ((self.next_u64() >> 11) as f64) * TWO_53_INVERSE
     }
 }
 

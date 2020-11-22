@@ -1,7 +1,6 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
-use random_numbers;
-use random_numbers::RandomNumber;
+use random_numbers::prelude::*;
 
 fn bench_init_with_no_seed(c: &mut Criterion) {
     c.bench_function("lib_default_init_with_no_seed", |b| b.iter(|| random_numbers::new_default()));
