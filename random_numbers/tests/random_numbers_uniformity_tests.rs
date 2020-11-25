@@ -6,7 +6,7 @@ mod uniform;
 fn default_is_uniform() {
     let mut rand = random_numbers::new_default();
 
-    assert!(uniform::is_random_number_uniform(&mut rand, None).is_ok());
+    assert!(uniform::is_random_number_uniform(&mut *rand, None).is_ok());
 }
 
 #[test]

@@ -14,6 +14,7 @@ mod constants{
     pub const T: u64 = 31;
 }
 
+#[derive(Debug)]
 pub struct SplitMix {
     current_state: u64
 }

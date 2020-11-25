@@ -2,6 +2,7 @@ use crate::RandomNumber;
 use crate::RandomNumberInit;
 use crate::split_mix::SplitMix;
 
+#[derive(Debug)]
 pub struct XorshiftPlus {
     a_state: u64,
     b_state: u64

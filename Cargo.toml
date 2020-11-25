@@ -12,3 +12,6 @@ members = [
     "random_collections",
     "random_distributions",
 ]
+
+[dependencies]
+random_numbers = { path = "random_numbers" }

@@ -60,6 +60,8 @@ mod seeds;
 mod split_mix;
 mod xorshift;
 
+use std::fmt::Debug;
+
 use mersenne_twister::MersenneTwister;
 use msws::MiddleSquaresWeylSequence;
 use xorshift::xorshift_plus::XorshiftPlus;
@@ -104,38 +106,45 @@ pub trait RandomNumberInit {
 /// reason we generally take the upper n bits for the smaller scalar data types (e.g. [`u8`]).
 /// 
 /// However, any individual implementation can override this behavior if desired.
-pub trait RandomNumber {
+pub trait RandomNumber: Debug {
     /// Returns a random [`bool`].
+    #[inline]
     fn next_bool(&mut self) -> bool {
         self.next_u64() >= TWO_63
     }
 
     /// Returns a random [`u8`].
+    #[inline]
     fn next_u8(&mut self) -> u8 {
         (self.next_u64() >> 56) as u8
     }
 
     /// Returns a random [`i8`].
+    #[inline]
     fn next_i8(&mut self) -> i8 {
         self.next_u8() as i8
     }
 
     /// Returns a random [`u16`].
+    #[inline]
     fn next_u16(&mut self) -> u16 {
         (self.next_u64() >> 48) as u16
     }
 
     /// Returns a random [`i16`].
+    #[inline]
     fn next_i16(&mut self) -> i16 {
         self.next_u16() as i16
     }
 
     /// Returns a random [`u32`].
+    #[inline]
     fn next_u32(&mut self) -> u32 {
         (self.next_u64() >> 32) as u32
     }
 
     /// Returns a random [`i32`].
+    #[inline]
     fn next_i32(&mut self) -> i32 {
         self.next_u32() as i32
     }
@@ -144,28 +153,54 @@ pub trait RandomNumber {
     fn next_u64(&mut self) -> u64;
 
     /// Returns a random [`i64`].
+    #[inline]
     fn next_i64(&mut self) -> i64 {
         self.next_u64() as i64
     }
 
     /// Returns a random [`u128`].
+    #[inline]
     fn next_u128(&mut self) -> u128 {
         (self.next_u64() as u128) << 64 | (self.next_u64() as u128)
     }
 
     /// Returns a random [`i128`].
+    #[inline]
     fn next_i128(&mut self) -> i128 {
         self.next_u128() as i128
     }
 
     /// Returns a random [`f32`].
+    #[inline]
     fn next_f32(&mut self) -> f32 {
         ((self.next_u32() >> 9) as f32) * TWO_23_INVERSE
     }
 
     /// Returns a random [`f64`].
+    #[inline]
     fn next_f64(&mut self) -> f64 {
         ((self.next_u64() >> 11) as f64) * TWO_53_INVERSE
+    }
+
+    /// Returns a random [`usize`] on 16-bit architectures
+    #[inline]
+    #[cfg(any(target_pointer_width = "16"))]
+    fn next_usize(&mut self) -> usize {
+        self.next_u16() as usize
+    }
+
+    /// Returns a random [`usize`] on 32-bit architectures
+    #[inline]
+    #[cfg(any(target_pointer_width = "32"))]
+    fn next_usize(&mut self) -> usize {
+        self.next_u32() as usize
+    }
+
+    /// Returns a random [`usize`] on 64-bit architectures
+    #[inline]
+    #[cfg(any(target_pointer_width = "64"))]
+    fn next_usize(&mut self) -> usize {
+        self.next_u64() as usize
     }
 }
 
@@ -186,10 +221,12 @@ pub enum RandomNumberAlgorithm {
     Xoshiro256SS
 }
 
+pub const DEFAULT_RANDOM_NUMBER_ALGORITHM: RandomNumberAlgorithm = RandomNumberAlgorithm::Xoshiro256SS;
+
 /// Generates a new default random number generator seeded with the current time in nanos.
 /// This is the easiest way to get started using the library.
-pub fn new_default() -> impl RandomNumber {
-    Xoshiro256SS::new()
+pub fn new_default() -> Box<dyn RandomNumber> {
+    new(DEFAULT_RANDOM_NUMBER_ALGORITHM)
 }
 
 /// Generates a new random number generator using the given implementation, seeded with
@@ -204,8 +241,8 @@ pub fn new(algorithm: RandomNumberAlgorithm) -> Box<dyn RandomNumber> {
 }
 
 /// Generates a new default random number generator, seeded with the given `u64`.
-pub fn from_seed_default(seed: u64) -> impl RandomNumber {
-    Xoshiro256SS::from_seed(seed)
+pub fn from_seed_default(seed: u64) -> Box<dyn RandomNumber> {
+    from_seed(DEFAULT_RANDOM_NUMBER_ALGORITHM, seed)
 }
 
 /// Generates a new random number generator using the given implementation, seeded with

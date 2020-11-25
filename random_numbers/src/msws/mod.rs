@@ -10,6 +10,7 @@ mod constants {
     pub const S: u64 = 0x9f32e1cbc5e1374b;
 }
 
+#[derive(Debug)]
 pub struct MiddleSquaresWeylSequence {
     x: u64,
     w: u64
@@ -26,14 +27,17 @@ impl RandomNumberInit for MiddleSquaresWeylSequence {
 }
 
 impl RandomNumber for MiddleSquaresWeylSequence {
+    #[inline]
     fn next_bool(&mut self) -> bool {
         self.next_u32() >= crate::TWO_31
     }
 
+    #[inline]
     fn next_u8(&mut self) -> u8 {
         (self.next_u32() >> 24) as u8
     }
 
+    #[inline]
     fn next_u16(&mut self) -> u16 {
         (self.next_u32() >> 16) as u16
     }
@@ -46,6 +50,7 @@ impl RandomNumber for MiddleSquaresWeylSequence {
         self.x as u32
     }
 
+    #[inline]
     fn next_u64(&mut self) -> u64 {
         (self.next_u32() as u64) << 32 | (self.next_u32() as u64)
     }

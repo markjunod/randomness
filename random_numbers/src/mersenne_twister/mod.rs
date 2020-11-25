@@ -28,6 +28,7 @@ mod constants {
     pub const F: u64 = 6364136223846793005;
 }
 
+#[derive(Debug)]
 pub struct MersenneTwister {
     index: usize,
     mt_array: [u64; constants::N]

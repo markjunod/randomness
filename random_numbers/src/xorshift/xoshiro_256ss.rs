@@ -2,6 +2,7 @@ use crate::RandomNumber;
 use crate::RandomNumberInit;
 use crate::split_mix::SplitMix;
 
+#[derive(Debug)]
 pub struct Xoshiro256SS {
     state_array: [u64; 4]
 }
