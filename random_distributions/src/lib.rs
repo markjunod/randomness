@@ -8,6 +8,7 @@
 pub mod prelude {
     pub use crate::*;
     pub use crate::SampleDistribution;
+    pub use crate::uniform_distribution::Uniform;
 }
 
 mod binomial_distribution;
@@ -43,7 +44,7 @@ pub trait ContinuousDistribution<T: DistributionParams> {
 /// distrubtion.
 /// 
 /// Calling `sample` will produce a new instance of `T`.
-pub trait SampleDistribution<T> {
+pub trait SampleDistribution<T: ?Sized> {
     fn sample(&mut self) -> T;
 }
 

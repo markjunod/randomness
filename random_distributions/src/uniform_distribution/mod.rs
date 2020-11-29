@@ -38,103 +38,30 @@ impl Uniform {
     }
 }
 
-impl SampleDistribution<bool> for Uniform {
-    #[inline]
-    fn sample(&mut self) -> bool {
-        self.random_number.next_bool()
-    }
+macro_rules! make_sample_dist {
+    ($next_name: ident, $sample_type: ty) => {
+        impl SampleDistribution<$sample_type> for Uniform {
+            #[inline]
+            fn sample(&mut self) -> $sample_type {
+                self.random_number.$next_name()
+            }
+        }
+    };
 }
 
-impl SampleDistribution<u8> for Uniform {
-    #[inline]
-    fn sample(&mut self) -> u8 {
-        self.random_number.next_u8()
-    }
-}
-
-impl SampleDistribution<i8> for Uniform {
-    #[inline]
-    fn sample(&mut self) -> i8 {
-        self.random_number.next_i8()
-    }
-}
-
-impl SampleDistribution<u16> for Uniform {
-    #[inline]
-    fn sample(&mut self) -> u16 {
-        self.random_number.next_u16()
-    }
-}
-
-impl SampleDistribution<i16> for Uniform {
-    #[inline]
-    fn sample(&mut self) -> i16 {
-        self.random_number.next_i16()
-    }
-}
-
-impl SampleDistribution<u32> for Uniform {
-    #[inline]
-    fn sample(&mut self) -> u32 {
-        self.random_number.next_u32()
-    }
-}
-
-impl SampleDistribution<i32> for Uniform {
-    #[inline]
-    fn sample(&mut self) -> i32 {
-        self.random_number.next_i32()
-    }
-}
-
-impl SampleDistribution<u64> for Uniform {
-    #[inline]
-    fn sample(&mut self) -> u64 {
-        self.random_number.next_u64()
-    }
-}
-
-impl SampleDistribution<i64> for Uniform {
-    #[inline]
-    fn sample(&mut self) -> i64 {
-        self.random_number.next_i64()
-    }
-}
-
-impl SampleDistribution<u128> for Uniform {
-    #[inline]
-    fn sample(&mut self) -> u128 {
-        self.random_number.next_u128()
-    }
-}
-
-impl SampleDistribution<i128> for Uniform {
-    #[inline]
-    fn sample(&mut self) -> i128 {
-        self.random_number.next_i128()
-    }
-}
-
-impl SampleDistribution<usize> for Uniform {
-    #[inline]
-    fn sample(&mut self) -> usize {
-        self.random_number.next_usize()
-    }
-}
-
-impl SampleDistribution<f32> for Uniform {
-    #[inline]
-    fn sample(&mut self) -> f32 {
-        self.random_number.next_f32()
-    }
-}
-
-impl SampleDistribution<f64> for Uniform {
-    #[inline]
-    fn sample(&mut self) -> f64 {
-        self.random_number.next_f64()
-    }
-}
+make_sample_dist!(next_bool, bool);
+make_sample_dist!(next_u8, u8);
+make_sample_dist!(next_i8, i8);
+make_sample_dist!(next_u16, u16);
+make_sample_dist!(next_i16, i16);
+make_sample_dist!(next_u32, u32);
+make_sample_dist!(next_i32, i32);
+make_sample_dist!(next_u64, u64);
+make_sample_dist!(next_i64, i64);
+make_sample_dist!(next_u128, u128);
+make_sample_dist!(next_i128, i128);
+make_sample_dist!(next_f32, f32);
+make_sample_dist!(next_f64, f64);
 
 impl Uniform {
     pub fn sample_f32_range(&mut self, min: f32, max: f32) -> f32 {

@@ -14,4 +14,18 @@ members = [
 ]
 
 [dependencies]
+random_collections = { path = "random_collections" }
+random_distributions = { path = "random_distributions" }
 random_numbers = { path = "random_numbers" }
+
+[dev-dependencies]
+criterion = "0.3.3"
+rand = "0.7.3"
+
+[[bench]]
+name = "external_rand_crate_benchmarks"
+harness = false
+
+[[bench]]
+name = "random_benchmarks"
+harness = false
